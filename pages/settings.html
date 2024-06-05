@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Настройки цвета</title>
+<link rel="stylesheet" href="styles/settings_style.css">
+</head>
+<body>
+  <style>
+    body {
+  font-family: Arial, sans-serif;
+  transition: background-color 0.5s ease;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  max-width: 400px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.color-option {
+  margin-bottom: 20px;
+}
+
+.color-option label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.color-option input[type="color"] {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+}
+  </style>
+  <div class="container">
+    <h2>Настройки цвета</h2>
+    <div class="color-option">
+      <label for="bgColor">Фон:</label>
+      <input type="color" id="bgColor">
+    </div>
+    <div class="color-option">
+      <label for="textColor">Текст:</label>
+      <input type="color" id="textColor">
+    </div>
+    <div class="color-option">
+      <label for="linkColor">Ссылки:</label>
+      <input type="color" id="linkColor">
+    </div>
+    <button id="saveButton">Сохранить настройки</button>
+    <button id="resetButton">Сбросить настройки</button>
+  </div>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const bgColorInput = document.getElementById('bgColor');
+      const textColorInput = document.getElementById('textColor');
+      const linkColorInput = document.getElementById('linkColor');
+      const saveButton = document.getElementById('saveButton');
+      const resetButton = document.getElementById('resetButton');
+  
+
+      const savedBgColor = localStorage.getItem('bgColor');
+      const savedTextColor = localStorage.getItem('textColor');
+      const savedLinkColor = localStorage.getItem('linkColor');
+  
+      if (savedBgColor) {
+        document.body.style.backgroundColor = savedBgColor;
+        bgColorInput.value = savedBgColor;
+      }
+      if (savedTextColor) {
+        document.body.style.color = savedTextColor;
+        textColorInput.value = savedTextColor;
+      }
+      if (savedLinkColor) {
+        const links = document.querySelectorAll('a');
+        links.forEach(link => {
+          link.style.color = savedLinkColor;
+        });
+        linkColorInput.value = savedLinkColor;
+      }
+  
+      saveButton.addEventListener('click', function() {
+        localStorage.setItem('bgColor', bgColorInput.value);
+        localStorage.setItem('textColor', textColorInput.value);
+        localStorage.setItem('linkColor', linkColorInput.value);
+        alert('Настройки сохранены!');
+      });
+  
+
+      resetButton.addEventListener('click', function() {
+        localStorage.removeItem('bgColor');
+        localStorage.removeItem('textColor');
+        localStorage.removeItem('linkColor');
+  
+        document.body.style.backgroundColor = '#f9f9f9';
+        document.body.style.color = '#000';
+  
+        const links = document.querySelectorAll('a');
+        links.forEach(link => {
+          link.style.color = '#007BFF';
+        });
+  
+        bgColorInput.value = '#f9f9f9';
+        textColorInput.value = '#000000';
+        linkColorInput.value = '#007BFF';
+  
+        alert('Настройки сброшены!');
+      });
+  
+
+      bgColorInput.addEventListener('input', function() {
+        document.body.style.backgroundColor = this.value;
+      });
+  
+      textColorInput.addEventListener('input', function() {
+        document.body.style.color = this.value;
+      });
+  
+      linkColorInput.addEventListener('input', function() {
+        const links = document.querySelectorAll('a');
+        links.forEach(link => {
+          link.style.color = this.value;
+        });
+      });
+    });
+  </script>
+  </body>
+  </html>
